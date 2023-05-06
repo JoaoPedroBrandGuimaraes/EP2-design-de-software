@@ -30,3 +30,17 @@ def faz_jogada(tabuleiro,linha,coluna):
     else:
         tabuleiro[linha][coluna] = '-'
     return tabuleiro
+
+def posiciona_frota(dicionario_informacoes):
+    tabuleiro=[]
+    for i in range(0,10):
+        lista2=[]
+        for j in range (0,10):
+            lista2.append(0)
+        tabuleiro.append(lista2)
+
+    for posicoes in dicionario_informacoes.values():
+        for posicionamento in posicoes:
+            for posicao_precisa in posicionamento:
+                tabuleiro[posicao_precisa[0]][posicao_precisa[1]] = 1
+    return tabuleiro
