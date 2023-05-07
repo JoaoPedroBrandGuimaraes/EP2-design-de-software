@@ -44,3 +44,17 @@ def posiciona_frota(dicionario_informacoes):
             for posicao_precisa in posicionamento:
                 tabuleiro[posicao_precisa[0]][posicao_precisa[1]] = 1
     return tabuleiro
+
+def afundados(dicionario,tabuleiro):
+    navios_afundados=0
+    for navios in dicionario.values():
+        for navio_especifico in navios:
+            valor=0
+            for coordenada in navio_especifico:
+                linha = coordenada[0]
+                coluna = coordenada[1]
+                if tabuleiro[linha][coluna] == 'X':
+                    valor +=1
+                    if valor == len(navio_especifico):
+                        navios_afundados +=1
+    return navios_afundados
