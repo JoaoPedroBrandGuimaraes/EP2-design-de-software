@@ -58,3 +58,31 @@ def afundados(dicionario,tabuleiro):
                     if valor == len(navio_especifico):
                         navios_afundados +=1
     return navios_afundados
+
+def define_posicoes(linha,coluna,orientacao,tamanho):
+    lista_f=[]
+    if orientacao == 'horizontal':
+        for i in range (0,tamanho):
+            lista_f.append([linha, coluna +i])
+    elif orientacao =='vertical':
+        for i in range (0,tamanho):
+            lista_f.append([linha +i, coluna])
+    return lista_f
+
+
+def posicao_valida(frota,linha,coluna,orientacao,tamanho):
+    posicionamentos = define_posicoes(linha,coluna,orientacao,tamanho)
+    for navios in frota.values():
+        for navio_especifico in navios:
+            for posicao_exata in posicionamentos:
+                if posicao_exata in navio_especifico:
+                    return False
+    for posicao_exata in posicionamentos:
+        indice1 = posicao_exata[0] < 0
+        indice2 = posicao_exata[0] >=10
+        indice3 = posicao_exata[1] <0
+        indice4 = posicao_exata[1] >=10
+
+        if indice1 or indice2 or indice3 or indice4:
+            return False
+    return True
