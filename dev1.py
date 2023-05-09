@@ -1,1 +1,1 @@
-print(Joao Pedro Guimaraes)
+print('Joao Pedro Guimaraes')
