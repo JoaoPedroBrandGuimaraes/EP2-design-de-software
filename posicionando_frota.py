@@ -77,63 +77,76 @@ def posicao_valida(frota,linha,coluna,orientacao,tamanho):
             return False
     return True
 
-navios = {}
 
-for i in range(1):
-    tamanho = 4
+num_pa = 1
+t_pa = 4
+nome_pa = 'porta-aviões'
+num_nt = 2
+t_nt = 3
+nome_nt = 'navio-tanque'
+num_c = 3
+t_c = 2
+nome_c = 'contratorpedeiro'
+num_s = 4
+t_s = 1
+nome_s = 'submarino'
+frotas = {}
+
+for i in range(num_pa):
+    tamanho = t_pa
     valido = False
     while not valido:
-        print('Insira as informações referentes ao navio {0} que possui tamanho {1}'.format('porta-aviões',4))
+        print('Insira as informações referentes ao navio {0} que possui tamanho {1}'.format(nome_pa,t_pa))
         linha = int(input('Linha:'))
         coluna = int(input('Coluna:'))
         orientacao = int(input('[1] Vertical [2] Horizontal >'))
-        valido = posicao_valida(navios,linha,coluna,orientacao,tamanho)
+        valido = posicao_valida(frotas,linha,coluna,orientacao,tamanho)
         if valido == True:
             break
         else:
             print('Esta posição não está válida!')
-    navios = preenche_frota(navios,'porta-aviões',linha,coluna,orientacao,tamanho)
+    frotas = preenche_frota(frotas,nome_pa,linha,coluna,orientacao,tamanho)
 
-for i in range(2):
-    tamanho = 3
+for i in range(num_nt):
+    tamanho = t_nt
     valido = False
     while not valido:
-        print('Insira as informações referentes ao navio {0} que possui tamanho {1}'.format('navio-tanque',3))
+        print('Insira as informações referentes ao navio {0} que possui tamanho {1}'.format(nome_nt,t_nt))
         linha = int(input('Linha:'))
         coluna = int(input('Coluna:'))
         orientacao = int(input('[1] Vertical [2] Horizontal >'))
-        valido = posicao_valida(navios,linha,coluna,orientacao,tamanho)
+        valido = posicao_valida(frotas,linha,coluna,orientacao,tamanho)
         if valido == True:
             break
         else:
             print('Esta posição não está válida!')
-    navios = preenche_frota(navios,'navio-tanque',linha,coluna,orientacao,tamanho)
+    frotas = preenche_frota(frotas,nome_nt,linha,coluna,orientacao,tamanho)
 
-for i in range(3):
-    tamanho = 2
+for i in range(num_c):
+    tamanho = t_c
     valido = False
     while not valido:
-        print('Insira as informações referentes ao navio {0} que possui tamanho {1}'.format('contratorpedeiro',2))
+        print('Insira as informações referentes ao navio {0} que possui tamanho {1}'.format(nome_c,t_c))
         linha = int(input('Linha:'))
         coluna = int(input('Coluna:'))
         orientacao = int(input('[1] Vertical [2] Horizontal >'))
-        valido = posicao_valida(navios,linha,coluna,orientacao,tamanho)
+        valido = posicao_valida(frotas,linha,coluna,orientacao,tamanho)
         if valido == True:
             break
         else:
             print('Esta posição não está válida!')
-    navios = preenche_frota(navios,'contratorpedeiro',linha,coluna,orientacao,tamanho)
+    frotas = preenche_frota(frotas,nome_c,linha,coluna,orientacao,tamanho)
 
-for i in range(4):
-    tamanho = 1
+for i in range(num_s):
+    tamanho = t_s
     valido = False
     while not valido:
-        print('Insira as informações referentes ao navio {0} que possui tamanho {1}'.format('submarino',1))
+        print('Insira as informações referentes ao navio {0} que possui tamanho {1}'.format(nome_s,t_s))
         linha = int(input('Linha:'))
         coluna = int(input('Coluna:'))
-        valido = posicao_valida(navios,linha,coluna,orientacao,tamanho)
+        valido = posicao_valida(frotas,linha,coluna,orientacao,tamanho)
         if valido == True:
             break
         else:
             print('Esta posição não está válida!')
-    navios = preenche_frota(navios,'submarino',linha,coluna,orientacao,tamanho)
+    frotas = preenche_frota(frotas,nome_s,linha,coluna,orientacao,tamanho)
