@@ -51,14 +51,13 @@ def afundados(dicionario,tabuleiro):
 
 def define_posicoes(linha,coluna,orientacao,tamanho):
     lista_f=[]
-    if orientacao == 'horizontal':
+    if orientacao == 2:
         for i in range (0,tamanho):
             lista_f.append([linha, coluna +i])
-    elif orientacao =='vertical':
+    elif orientacao ==1:
         for i in range (0,tamanho):
             lista_f.append([linha +i, coluna])
     return lista_f
-
 
 def posicao_valida(frota,linha,coluna,orientacao,tamanho):
     posicionamentos = define_posicoes(linha,coluna,orientacao,tamanho)
@@ -76,7 +75,6 @@ def posicao_valida(frota,linha,coluna,orientacao,tamanho):
         if indice1 or indice2 or indice3 or indice4:
             return False
     return True
-
 
 num_pa = 1
 t_pa = 4
