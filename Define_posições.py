@@ -1,9 +1,10 @@
+#Define Posições
 def define_posicoes(linha,coluna,orientacao,tamanho):
     lista_f=[]
-    if orientacao == 2:
+    if orientacao == 'horizontal':
         for i in range (0,tamanho):
             lista_f.append([linha, coluna +i])
-    elif orientacao ==1:
+    elif orientacao =='vertical':
         for i in range (0,tamanho):
             lista_f.append([linha +i, coluna])
     return lista_f
