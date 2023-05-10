@@ -1,54 +1,4 @@
-def define_posicoes(linha,coluna,orientacao,tamanho):
-    lista_f=[]
-    if orientacao == 'horizontal':
-        for i in range (0,tamanho):
-            lista_f.append([linha, coluna +i])
-    elif orientacao =='vertical':
-        for i in range (0,tamanho):
-            lista_f.append([linha +i, coluna])
-    return lista_f
-  
-def preenche_frota(frota,nome_navio,linha,coluna,orientacao,tamanho):
-    if nome_navio not in frota.keys():
-        frota[nome_navio] = []
-    frota[nome_navio].append(define_posicoes(linha, coluna, orientacao, tamanho))
-    return frota
-    
-def faz_jogada(tabuleiro,linha,coluna):
-    if tabuleiro[linha][coluna]==1:
-        tabuleiro[linha][coluna] = 'X'
-    else:
-        tabuleiro[linha][coluna] = '-'
-    return tabuleiro
-
-def posiciona_frota(dicionario_informacoes):
-    tabuleiro=[]
-    for i in range(0,10):
-        lista2=[]
-        for j in range (0,10):
-            lista2.append(0)
-        tabuleiro.append(lista2)
-
-    for posicoes in dicionario_informacoes.values():
-        for posicionamento in posicoes:
-            for posicao_precisa in posicionamento:
-                tabuleiro[posicao_precisa[0]][posicao_precisa[1]] = 1
-    return tabuleiro
-
-def afundados(dicionario,tabuleiro):
-    navios_afundados=0
-    for navios in dicionario.values():
-        for navio_especifico in navios:
-            valor=0
-            for coordenada in navio_especifico:
-                linha = coordenada[0]
-                coluna = coordenada[1]
-                if tabuleiro[linha][coluna] == 'X':
-                    valor +=1
-                    if valor == len(navio_especifico):
-                        navios_afundados +=1
-    return navios_afundados
-
+#Define Posições
 def define_posicoes(linha,coluna,orientacao,tamanho):
     lista_f=[]
     if orientacao == 2:
@@ -59,92 +9,63 @@ def define_posicoes(linha,coluna,orientacao,tamanho):
             lista_f.append([linha +i, coluna])
     return lista_f
 
-def posicao_valida(frota,linha,coluna,orientacao,tamanho):
-    posicionamentos = define_posicoes(linha,coluna,orientacao,tamanho)
-    for navios in frota.values():
-        for navio_especifico in navios:
-            for posicao_exata in posicionamentos:
-                if posicao_exata in navio_especifico:
-                    return False
-    for posicao_exata in posicionamentos:
-        indice1 = posicao_exata[0] < 0
-        indice2 = posicao_exata[0] >=10
-        indice3 = posicao_exata[1] <0
-        indice4 = posicao_exata[1] >=10
+#Preenche Frota
+def preenche_frota(frota, nome_navio, linha, coluna, orientacao, tamanho):
+    if nome_navio in frota:
+        frota[nome_navio].append(define_posicoes(linha, coluna, orientacao, tamanho))
+    else:
+        frota[nome_navio] = [define_posicoes(linha, coluna, orientacao, tamanho)]
+    return frota
 
-        if indice1 or indice2 or indice3 or indice4:
-            return False
-    return True
+#Faz Jogada
+def faz_jogada(tabuleiro, linha, coluna):
+    marca = 'X' if tabuleiro[linha][coluna] == 1 else '-'
+    tabuleiro[linha][coluna] = marca
+    return tabuleiro
 
-num_pa = 1
-t_pa = 4
-nome_pa = 'porta-aviões'
-num_nt = 2
-t_nt = 3
-nome_nt = 'navio-tanque'
-num_c = 3
-t_c = 2
-nome_c = 'contratorpedeiro'
-num_s = 4
-t_s = 1
-nome_s = 'submarino'
-frotas = {}
+#Posiciona Frota
+def posiciona_frota(dicionario_informacoes):
+    tabuleiro = [[0 for j in range(10)] for i in range(10)]
+    for navio, posicoes in dicionario_informacoes.items():
+        for posicionamento in posicoes:
+            for linha, coluna in posicionamento:
+                tabuleiro[linha][coluna] = 1
+    return tabuleiro
 
-for i in range(num_pa):
-    tamanho = t_pa
+#Quantas Embarcações Afundadas?
+def afundados(dicionario, tabuleiro):
+    navios_afundados = 0
+    for navio in dicionario.values():
+        for posicoes in navio:
+            if all(tabuleiro[linha][coluna] == 'X' for linha, coluna in posicoes):
+                navios_afundados += 1
+    return navios_afundados
+
+#Posição Válida
+def posicao_valida(frota, linha, coluna, orientacao, tamanho):
+    posicionamentos = define_posicoes(linha, coluna, orientacao, tamanho)
+    for navio in frota.values():
+        for posicao_navio in navio:
+            if any(posicao in posicao_navio for posicao in posicionamentos):
+                return False
+    return all(0 <= posicao[0] < 10 and 0 <= posicao[1] < 10 for posicao in posicionamentos)
+
+#Posicionando Frota
+frotas={}
+tamanhos = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
+tipos = ['porta-aviões', 'navio-tanque', 'navio-tanque', 'contratorpedeiro', 
+         'contratorpedeiro', 'contratorpedeiro', 'submarino', 'submarino', 
+         'submarino', 'submarino']
+
+for i, tamanho in enumerate(tamanhos):
+    tipo = tipos[i]
     valido = False
     while not valido:
-        print('Insira as informações referentes ao navio {0} que possui tamanho {1}'.format(nome_pa,t_pa))
+        print('Insira as informações referentes ao navio {0} que possui tamanho {1}'.format(tipo, tamanho))
         linha = int(input('Linha:'))
         coluna = int(input('Coluna:'))
         orientacao = int(input('[1] Vertical [2] Horizontal >'))
-        valido = posicao_valida(frotas,linha,coluna,orientacao,tamanho)
-        if valido == True:
-            break
-        else:
+        valido = posicao_valida(frotas, linha, coluna, orientacao, tamanho)
+        if not valido:
             print('Esta posição não está válida!')
-    frotas = preenche_frota(frotas,nome_pa,linha,coluna,orientacao,tamanho)
-
-for i in range(num_nt):
-    tamanho = t_nt
-    valido = False
-    while not valido:
-        print('Insira as informações referentes ao navio {0} que possui tamanho {1}'.format(nome_nt,t_nt))
-        linha = int(input('Linha:'))
-        coluna = int(input('Coluna:'))
-        orientacao = int(input('[1] Vertical [2] Horizontal >'))
-        valido = posicao_valida(frotas,linha,coluna,orientacao,tamanho)
-        if valido == True:
-            break
-        else:
-            print('Esta posição não está válida!')
-    frotas = preenche_frota(frotas,nome_nt,linha,coluna,orientacao,tamanho)
-
-for i in range(num_c):
-    tamanho = t_c
-    valido = False
-    while not valido:
-        print('Insira as informações referentes ao navio {0} que possui tamanho {1}'.format(nome_c,t_c))
-        linha = int(input('Linha:'))
-        coluna = int(input('Coluna:'))
-        orientacao = int(input('[1] Vertical [2] Horizontal >'))
-        valido = posicao_valida(frotas,linha,coluna,orientacao,tamanho)
-        if valido == True:
-            break
-        else:
-            print('Esta posição não está válida!')
-    frotas = preenche_frota(frotas,nome_c,linha,coluna,orientacao,tamanho)
-
-for i in range(num_s):
-    tamanho = t_s
-    valido = False
-    while not valido:
-        print('Insira as informações referentes ao navio {0} que possui tamanho {1}'.format(nome_s,t_s))
-        linha = int(input('Linha:'))
-        coluna = int(input('Coluna:'))
-        valido = posicao_valida(frotas,linha,coluna,orientacao,tamanho)
-        if valido == True:
-            break
-        else:
-            print('Esta posição não está válida!')
-    frotas = preenche_frota(frotas,nome_s,linha,coluna,orientacao,tamanho)
+    frotas = preenche_frota(frotas, tipo, linha, coluna, orientacao, tamanho)
